@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nowcast/home.dart';
 import 'package:nowcast/splash.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color(0xff87CEFA),
         useMaterial3: true,
       ),
-      home: SplashScreen(),
+      home: HomePage(),
     );
   }
 }
