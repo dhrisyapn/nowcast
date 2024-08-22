@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 //import geolocator
 import 'package:geolocator/geolocator.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:nowcast/providerclass.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,9 +29,6 @@ class _HomePageState extends State<HomePage> {
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled, don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
       return Future.error('Location services are disabled.');
     }
 
@@ -35,11 +36,6 @@ class _HomePageState extends State<HomePage> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
         return Future.error('Location permissions are denied');
       }
     }
@@ -58,6 +54,37 @@ class _HomePageState extends State<HomePage> {
       _currentPosition = position;
       print(_currentPosition);
     });
+    getWeatherData(_currentPosition!.latitude.toString(),
+        _currentPosition!.longitude.toString());
+  }
+
+  void getWeatherData(String lat, String lon) async {
+    final url =
+        'http://api.weatherapi.com/v1/current.json?key=c095793f5e39491eb0d92359242208&q=$lat,$lon';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final tempC = data['current']['temp_c'];
+        final tempF = data['current']['temp_f'];
+        final conditionText = data['current']['condition']['text'];
+        final icon1 = 'https:' + data['current']['condition']['icon'];
+
+        print('Temperature in Celsius: $tempC');
+        print('Temperature in Fahrenheit: $tempF');
+        print('Condition: $conditionText');
+        print('Icon: $icon1');
+        //save data to provider
+        Provider.of<WeatherProvider>(context, listen: false)
+            .setDatas(tempC.toString(), tempF.toString(), conditionText, icon1);
+      } else {
+        print('Failed to load weather data');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   @override
@@ -86,12 +113,13 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 25,
             ),
-            Image.asset('assets/cloudy.png'),
+            Image.network(
+                Provider.of<WeatherProvider>(context).getIcon.toString()),
             SizedBox(
               height: 20,
             ),
             Text(
-              'Rain',
+              Provider.of<WeatherProvider>(context).getWeather.toString(),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
@@ -100,7 +128,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Text(
-              '29/39',
+              Provider.of<WeatherProvider>(context).getTempC.toString() +
+                  '°C / ' +
+                  Provider.of<WeatherProvider>(context).getTempF.toString() +
+                  '°F',
               style: TextStyle(
                 color: Color(0xFF98FF98),
                 fontSize: 10,
