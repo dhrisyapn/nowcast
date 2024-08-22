@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:nowcast/home.dart';
 import 'package:nowcast/splash.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Ask for location permission
+  var status = await Permission.location.request();
+  if (status.isGranted) {
+    // Permission granted
+    runApp(const MyApp());
+  } else if (status.isDenied) {
+    // Permission denied
+    // You can show a dialog or a message to the user
+    runApp(const MyApp());
+  } else if (status.isPermanentlyDenied) {
+    // Permission permanently denied
+    // You can open app settings to let the user enable the permission
+    openAppSettings();
+  }
+
   runApp(const MyApp());
 }
 
