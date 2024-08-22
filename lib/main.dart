@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nowcast/home.dart';
+import 'package:nowcast/providerclass.dart';
 import 'package:nowcast/splash.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,14 +31,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff87CEFA),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => WeatherProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          scaffoldBackgroundColor: Color(0xff87CEFA),
+          useMaterial3: true,
+        ),
+        home: HomePage(),
       ),
-      home: HomePage(),
     );
   }
 }
