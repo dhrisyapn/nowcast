@@ -113,8 +113,16 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 25,
             ),
-            Image.network(
-                Provider.of<WeatherProvider>(context).getIcon.toString()),
+            Provider.of<WeatherProvider>(context).getIcon?.toString() != null
+                ? Image.network(
+                    Provider.of<WeatherProvider>(context).getIcon.toString(),
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: 30,
+                  )
+                : Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/blug-d8bc7.appspot.com/o/loading_circles_blue_gradient.png?alt=media&token=77b8af6b-2d6c-4c3f-8a78-fa122a0d2f35',
+                    width: MediaQuery.of(context).size.width * 0.5,
+                  ),
             SizedBox(
               height: 20,
             ),
