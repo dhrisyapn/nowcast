@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:nowcast/providerclass.dart';
 import 'package:provider/provider.dart';
 
@@ -89,6 +90,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate =
+        DateFormat('dd/MM/yyyy EEEE hh:mm a').format(DateTime.now());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -102,7 +105,7 @@ class _HomePageState extends State<HomePage> {
               height: MediaQuery.of(context).size.height * 0.30,
             ),
             Text(
-              '13/08/2024 Tuesday 10.23 AM',
+              formattedDate,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -121,6 +124,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 : Image.network(
                     'https://firebasestorage.googleapis.com/v0/b/blug-d8bc7.appspot.com/o/loading_circles_blue_gradient.png?alt=media&token=77b8af6b-2d6c-4c3f-8a78-fa122a0d2f35',
+                    fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width * 0.5,
                   ),
             SizedBox(
