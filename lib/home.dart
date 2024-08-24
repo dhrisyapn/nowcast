@@ -93,24 +93,28 @@ class _HomePageState extends State<HomePage> {
     String formattedDate =
         DateFormat('dd/MM/yyyy EEEE hh:mm a').format(DateTime.now());
     return Scaffold(
+      appBar: AppBar(
+        title: Image.asset('assets/name.png'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: 25,
-            ),
-            Center(child: Image.asset('assets/name.png')),
-            SizedBox(
               height: MediaQuery.of(context).size.height * 0.30,
             ),
-            Text(
-              formattedDate,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w500,
+            Center(
+              child: Text(
+                formattedDate,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             SizedBox(
