@@ -88,6 +88,43 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void searchWeatherData(String loc) async {
+    final url =
+        'http://api.weatherapi.com/v1/current.json?key=c095793f5e39491eb0d92359242208&q=$loc';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final tempC = data['current']['temp_c'];
+        final tempF = data['current']['temp_f'];
+        final conditionText = data['current']['condition']['text'];
+        final icon1 = 'https:' + data['current']['condition']['icon'];
+
+        print('Temperature in Celsius: $tempC');
+        print('Temperature in Fahrenheit: $tempF');
+        print('Condition: $conditionText');
+        print('Icon: $icon1');
+        //save data to provider
+        Provider.of<WeatherProvider>(context, listen: false)
+            .setDatas(tempC.toString(), tempF.toString(), conditionText, icon1);
+        //snackbar location found
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Location found'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        print('Failed to load weather data');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     String formattedDate =
@@ -116,6 +153,7 @@ class _HomePageState extends State<HomePage> {
                     width: MediaQuery.of(context).size.width -
                         120, // Adjust width to fit within the screen
                     child: TextField(
+                      controller: searchController,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 10.0),
@@ -138,18 +176,23 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1, color: Colors.white),
-                      borderRadius: BorderRadius.circular(10),
+                GestureDetector(
+                  onTap: () {
+                    searchWeatherData(searchController.text);
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: Colors.white),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                   ),
                 )
               ],
