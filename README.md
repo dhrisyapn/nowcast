@@ -1,16 +1,5 @@
-# nowcast
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Nowcast is a mobile application designed to provide users with accurate and real-time weather information tailored to their specific location. By leveraging the power of weatherapi.com\'s API, Nowcast offers a personalized and user-friendly experience for staying informed about the weather. The app\'s primary objective was to provide users with accurate forecasts, a personalized experience, interactive features, and the capabilities of weatherapi.com\'s API.\n Nowcast seamlessly integrates with weatherapi.com to retrieve real-time weather data, which is then processed and formatted for display on the app\'s interface. The app features a user-friendly design, allowing users to easily access current weather conditions, search for specific locations, and explore interactive weather maps.
+# Features
+- Real-time Weather Updates:Nowcast provides users with current weather conditions, including temperature, humidity, precipitation, wind speed, and more.
+- Personalized Forecasts:The app delivers forecasts tailored to the user\'s specific location, ensuring accurate and relevant information.
+- Search Functionality: Users can search for weather information for any location worldwide.
